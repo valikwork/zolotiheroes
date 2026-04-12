@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useGame } from "@/context/GameContext";
 import { characters, ENEMY_POINTS } from "@/data/characters";
@@ -13,50 +13,36 @@ export default function PlayPage() {
   const gameRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Use refs for callbacks so Phaser always calls the latest version
+  // without needing to recreate the game on every state change
+  const stateRef = useRef(state);
+  const routerRef = useRef(router);
+  const dispatchRef = useRef(dispatch);
+  stateRef.current = state;
+  routerRef.current = router;
+  dispatchRef.current = dispatch;
+
   const character = characters.find((c) => c.id === state.currentCharacterId);
   const level = character?.levels[state.currentLevelIndex];
+  const characterRef = useRef(character);
+  characterRef.current = character;
 
-  const handleEnemyKilled = useCallback(
-    (enemyType: string) => {
-      const points = ENEMY_POINTS[enemyType] ?? 100;
-      dispatch({ type: "ADD_SCORE", points });
-    },
-    [dispatch]
-  );
-
-  const handlePlayerHit = useCallback(() => {
-    dispatch({ type: "TAKE_DAMAGE", amount: 10 });
-  }, [dispatch]);
-
-  const handleLevelComplete = useCallback(() => {
-    const prevLevel = state.currentLevelIndex;
-    dispatch({ type: "COMPLETE_LEVEL" });
-    if (character && prevLevel + 1 >= character.levels.length) {
-      dispatch({ type: "COMPLETE_CHARACTER" });
-      const willBeCompleted = [...state.completedCharacters, character.id];
-      if (willBeCompleted.length >= characters.length) {
-        router.push("/victory?completed=true");
-      } else {
-        router.push("/victory");
-      }
-    } else {
-      router.push(`/map?from=${prevLevel}`);
-    }
-  }, [state, character, dispatch, router]);
-
-  const handlePlayerDied = useCallback(() => {
-    dispatch({ type: "GAME_OVER" });
-    router.push("/gameover");
-  }, [dispatch, router]);
+  // Capture initial values for game creation (don't change after mount)
+  const initialHealthRef = useRef(state.health);
+  const initialScoreRef = useRef(state.score);
+  const initialLevelRef = useRef(level);
 
   useEffect(() => {
-    if (!containerRef.current || !level) return;
+    const currentLevel = initialLevelRef.current;
+    if (!containerRef.current || !currentLevel) return;
     if (gameRef.current) return;
+
+    let cancelled = false;
 
     import("phaser").then((PhaserModule) => {
       import("@/game/scenes/LevelScene").then(({ LevelScene }) => {
         import("@/game/scenes/HUDScene").then(({ HUDScene }) => {
-          if (!containerRef.current) return;
+          if (!containerRef.current || cancelled) return;
 
           const config = {
             type: PhaserModule.AUTO,
@@ -80,36 +66,54 @@ export default function PlayPage() {
 
           game.scene.start("LevelScene", {
             levelData: {
-              enemies: level.enemies,
+              enemies: currentLevel.enemies,
               platforms: undefined,
-              background: level.background,
+              background: currentLevel.background,
             },
-            health: state.health,
-            score: state.score,
-            onEnemyKilled: handleEnemyKilled,
-            onPlayerHit: handlePlayerHit,
-            onLevelComplete: handleLevelComplete,
-            onPlayerDied: handlePlayerDied,
+            health: initialHealthRef.current,
+            score: initialScoreRef.current,
+            onEnemyKilled: (enemyType: string) => {
+              const points = ENEMY_POINTS[enemyType] ?? 100;
+              dispatchRef.current({ type: "ADD_SCORE", points });
+            },
+            onPlayerHit: () => {
+              dispatchRef.current({ type: "TAKE_DAMAGE", amount: 10 });
+            },
+            onLevelComplete: () => {
+              const s = stateRef.current;
+              const char = characterRef.current;
+              const prevLevel = s.currentLevelIndex;
+              dispatchRef.current({ type: "COMPLETE_LEVEL" });
+              if (char && prevLevel + 1 >= char.levels.length) {
+                dispatchRef.current({ type: "COMPLETE_CHARACTER" });
+                const willBeCompleted = [...s.completedCharacters, char.id];
+                if (willBeCompleted.length >= characters.length) {
+                  routerRef.current.push("/victory?completed=true");
+                } else {
+                  routerRef.current.push("/victory");
+                }
+              } else {
+                routerRef.current.push(`/map?from=${prevLevel}`);
+              }
+            },
+            onPlayerDied: () => {
+              dispatchRef.current({ type: "GAME_OVER" });
+              routerRef.current.push("/gameover");
+            },
           });
         });
       });
     });
 
     return () => {
+      cancelled = true;
       if (gameRef.current) {
         gameRef.current.destroy(true);
         gameRef.current = null;
       }
     };
-  }, [
-    level,
-    state.health,
-    state.score,
-    handleEnemyKilled,
-    handlePlayerHit,
-    handleLevelComplete,
-    handlePlayerDied,
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount only — callbacks use refs for latest state
 
   if (!character || !level) {
     return <div>Loading...</div>;
