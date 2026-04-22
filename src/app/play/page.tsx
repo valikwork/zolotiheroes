@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { useGame } from "@/context/GameContext";
 import { characters, ENEMY_POINTS } from "@/data/characters";
-import { GAME_WIDTH, GAME_HEIGHT } from "@/game/config";
+import { GAME_HEIGHT, GAME_WIDTH } from "@/game/config";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 export default function PlayPage() {
   const router = useRouter();
   const { state, dispatch } = useGame();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const gameRef = useRef<any>(null);
+  const gameRef = useRef<Phaser.Game | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Use refs for callbacks so Phaser always calls the latest version
@@ -97,8 +96,16 @@ export default function PlayPage() {
               }
             },
             onPlayerDied: () => {
+              const s = stateRef.current;
+              const finalScore = s.score;
+              const charId = s.currentCharacterId ?? "unknown";
               dispatchRef.current({ type: "GAME_OVER" });
-              routerRef.current.push("/gameover");
+              routerRef.current.push(
+                `/gameover?score=${finalScore}&character=${encodeURIComponent(charId)}`
+              );
+            },
+            onAbandon: () => {
+              routerRef.current.push("/");
             },
           });
         });
@@ -112,7 +119,6 @@ export default function PlayPage() {
         gameRef.current = null;
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run once on mount only — callbacks use refs for latest state
 
   if (!character || !level) {

@@ -32,6 +32,7 @@ export interface GameState {
   health: number;
   score: number;
   completedCharacters: string[];
+  characterProgress: Record<string, number>; // characterId -> levelIndex
 }
 
 export interface LeaderboardEntry {

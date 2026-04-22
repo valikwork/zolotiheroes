@@ -1,8 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { useGame } from "@/context/GameContext";
+import { useState } from "react";
 
 export default function TitleScreen() {
+  const { dispatch } = useGame();
+  const [confirmReset, setConfirmReset] = useState(false);
+
+  function handleReset() {
+    if (!confirmReset) {
+      setConfirmReset(true);
+      return;
+    }
+    dispatch({ type: "GAME_OVER" });
+    setConfirmReset(false);
+  }
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen gap-8 p-4">
       <div className="text-center">
@@ -27,6 +41,16 @@ export default function TitleScreen() {
         >
           LEADERBOARD
         </Link>
+        <button
+          onClick={handleReset}
+          className={`font-bold text-sm py-2 px-8 rounded-lg transition-colors ${
+            confirmReset
+              ? "bg-red-600 hover:bg-red-500 text-white"
+              : "bg-gray-900 hover:bg-gray-800 text-gray-500"
+          }`}
+        >
+          {confirmReset ? "ARE YOU SURE?" : "RESET PROGRESS"}
+        </button>
       </div>
     </main>
   );

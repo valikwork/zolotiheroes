@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useGame } from "@/context/GameContext";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function GameOverPage() {
+function GameOverContent() {
   const router = useRouter();
-  const { state } = useGame();
+  const searchParams = useSearchParams();
+  const finalScore = parseInt(searchParams.get("score") ?? "0", 10);
+  const characterId = searchParams.get("character") ?? "unknown";
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -21,8 +22,8 @@ export default function GameOverPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim().toUpperCase(),
-          score: state.score,
-          character: state.currentCharacterId ?? "unknown",
+          score: finalScore,
+          character: characterId,
           completed: false,
           timestamp: Date.now(),
         }),
@@ -39,7 +40,7 @@ export default function GameOverPage() {
     <main className="flex flex-col items-center justify-center min-h-screen gap-6 p-4 text-center">
       <h1 className="text-5xl font-bold text-red-500">GAME OVER</h1>
       <p className="text-2xl text-gray-400">You didn&apos;t make it to Chicot...</p>
-      <p className="text-4xl text-yellow-400 font-bold">Score: {state.score}</p>
+      <p className="text-4xl text-yellow-400 font-bold">Score: {finalScore}</p>
 
       {!saved ? (
         <div className="flex flex-col items-center gap-4">
@@ -81,5 +82,13 @@ export default function GameOverPage() {
         </button>
       </div>
     </main>
+  );
+}
+
+export default function GameOverPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <GameOverContent />
+    </Suspense>
   );
 }

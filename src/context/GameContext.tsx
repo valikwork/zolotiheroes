@@ -12,6 +12,7 @@ const initialState: GameState = {
   health: MAX_HEALTH,
   score: 0,
   completedCharacters: [],
+  characterProgress: {},
 };
 
 type Action =
@@ -25,17 +26,42 @@ type Action =
 
 function gameReducer(state: GameState, action: Action): GameState {
   switch (action.type) {
-    case "SELECT_CHARACTER":
-      return { ...state, currentCharacterId: action.characterId, currentLevelIndex: 0 };
-    case "COMPLETE_LEVEL":
-      return { ...state, currentLevelIndex: state.currentLevelIndex + 1 };
-    case "COMPLETE_CHARACTER":
+    case "SELECT_CHARACTER": {
+      // Save current character's progress before switching
+      const updatedProgress = { ...state.characterProgress };
+      if (state.currentCharacterId) {
+        updatedProgress[state.currentCharacterId] = state.currentLevelIndex;
+      }
+      // Restore saved progress for selected character, or start at 0
+      const savedLevel = updatedProgress[action.characterId] ?? 0;
+      return {
+        ...state,
+        currentCharacterId: action.characterId,
+        currentLevelIndex: savedLevel,
+        characterProgress: updatedProgress,
+      };
+    }
+    case "COMPLETE_LEVEL": {
+      const newIndex = state.currentLevelIndex + 1;
+      return {
+        ...state,
+        currentLevelIndex: newIndex,
+        characterProgress: {
+          ...state.characterProgress,
+          ...(state.currentCharacterId ? { [state.currentCharacterId]: newIndex } : {}),
+        },
+      };
+    }
+    case "COMPLETE_CHARACTER": {
+      const { [state.currentCharacterId!]: _, ...restProgress } = state.characterProgress;
       return {
         ...state,
         completedCharacters: [...state.completedCharacters, state.currentCharacterId!],
         currentCharacterId: null,
         currentLevelIndex: 0,
+        characterProgress: restProgress,
       };
+    }
     case "TAKE_DAMAGE":
       return { ...state, health: Math.max(0, state.health - action.amount) };
     case "ADD_SCORE":

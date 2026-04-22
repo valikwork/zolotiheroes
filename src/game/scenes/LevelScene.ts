@@ -30,10 +30,15 @@ export class LevelScene extends Phaser.Scene {
   private jumpButton = { active: false, pointerId: -1 };
   private currentScore = 0;
 
+  private escKey!: Phaser.Input.Keyboard.Key;
+  private isPaused = false;
+  private pauseOverlay?: Phaser.GameObjects.Container;
+
   public onEnemyKilled?: (enemyType: string) => void;
   public onPlayerHit?: () => void;
   public onLevelComplete?: () => void;
   public onPlayerDied?: () => void;
+  public onAbandon?: () => void;
   public currentHealth = 100;
 
   constructor() {
@@ -48,6 +53,7 @@ export class LevelScene extends Phaser.Scene {
     onPlayerHit?: () => void;
     onLevelComplete?: () => void;
     onPlayerDied?: () => void;
+    onAbandon?: () => void;
   }) {
     this.levelData = data.levelData;
     this.currentHealth = data.health;
@@ -56,6 +62,7 @@ export class LevelScene extends Phaser.Scene {
     this.onPlayerHit = data.onPlayerHit;
     this.onLevelComplete = data.onLevelComplete;
     this.onPlayerDied = data.onPlayerDied;
+    this.onAbandon = data.onAbandon;
   }
 
   create() {
@@ -139,6 +146,10 @@ export class LevelScene extends Phaser.Scene {
       this.spaceKey = this.input.keyboard.addKey(
         Phaser.Input.Keyboard.KeyCodes.SPACE
       );
+      this.escKey = this.input.keyboard.addKey(
+        Phaser.Input.Keyboard.KeyCodes.ESC
+      );
+      this.escKey.on("down", () => this.togglePause());
     }
 
     // Mouse aim + fire (desktop)
@@ -155,15 +166,13 @@ export class LevelScene extends Phaser.Scene {
     });
     this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
       if (!this.isMobile) {
-        this.player.setFiring(true);
+        this.fireBullet();
       } else {
         this.handleTouchStart(pointer);
       }
     });
     this.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
-      if (!this.isMobile) {
-        this.player.setFiring(false);
-      } else {
+      if (this.isMobile) {
         this.handleTouchEnd(pointer);
       }
     });
@@ -177,6 +186,13 @@ export class LevelScene extends Phaser.Scene {
     if (this.isMobile) {
       this.drawMobileControls();
     }
+
+    // Pause button (top-right)
+    const pauseBtn = this.add.text(GAME_WIDTH - 16, 40, "⏸", {
+      fontSize: "24px",
+      color: "#aaa",
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    pauseBtn.on("pointerdown", () => this.togglePause());
 
     // Launch HUD
     this.scene.launch("HUDScene", {
@@ -276,8 +292,8 @@ export class LevelScene extends Phaser.Scene {
         "couch-potato": 250,
       };
       this.currentScore += points[type] ?? 100;
-      this.scene.get("HUDScene").events.emit("enemyKilled", this.enemiesRemaining);
-      this.scene.get("HUDScene").events.emit("scoreChanged", this.currentScore);
+      this.events.emit("enemyKilled", this.enemiesRemaining);
+      this.events.emit("scoreChanged", this.currentScore);
 
       if (this.enemiesRemaining <= 0) {
         this.time.delayedCall(500, () => {
@@ -298,9 +314,7 @@ export class LevelScene extends Phaser.Scene {
     if (this.player.hit()) {
       this.currentHealth -= 10;
       this.onPlayerHit?.();
-      this.scene
-        .get("HUDScene")
-        .events.emit("healthChanged", this.currentHealth);
+      this.events.emit("healthChanged", this.currentHealth);
       if (this.currentHealth <= 0) {
         this.onPlayerDied?.();
       }
@@ -417,7 +431,57 @@ export class LevelScene extends Phaser.Scene {
     gfx.setDepth(-1);
   }
 
+  private togglePause() {
+    if (this.isPaused) {
+      // Resume
+      this.isPaused = false;
+      this.physics.resume();
+      if (this.pauseOverlay) {
+        this.pauseOverlay.destroy();
+        this.pauseOverlay = undefined;
+      }
+    } else {
+      // Pause
+      this.isPaused = true;
+      this.physics.pause();
+
+      this.pauseOverlay = this.add.container(0, 0);
+
+      const bg = this.add.rectangle(
+        GAME_WIDTH / 2, GAME_HEIGHT / 2,
+        GAME_WIDTH, GAME_HEIGHT,
+        0x000000, 0.7
+      );
+      this.pauseOverlay.add(bg);
+
+      const title = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 60, "PAUSED", {
+        fontSize: "48px", color: "#fff", fontStyle: "bold",
+      }).setOrigin(0.5);
+      this.pauseOverlay.add(title);
+
+      // Resume button
+      const resumeBtn = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 10, "RESUME", {
+        fontSize: "24px", color: "#4ade80", fontStyle: "bold",
+      }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      resumeBtn.on("pointerdown", () => this.togglePause());
+      this.pauseOverlay.add(resumeBtn);
+
+      // Quit to menu button
+      const quitBtn = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 60, "QUIT TO MENU", {
+        fontSize: "24px", color: "#ef4444", fontStyle: "bold",
+      }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      quitBtn.on("pointerdown", () => {
+        this.physics.resume();
+        this.onAbandon?.();
+      });
+      this.pauseOverlay.add(quitBtn);
+
+      this.pauseOverlay.setDepth(1000);
+    }
+  }
+
   update(time: number) {
+    if (this.isPaused) return;
     this.player.update(time);
     const left =
       this.cursors?.left.isDown ||
@@ -427,7 +491,7 @@ export class LevelScene extends Phaser.Scene {
       this.cursors?.right.isDown ||
       this.wasd?.D.isDown ||
       this.leftStick.x > 0;
-    const jump = this.spaceKey?.isDown;
+    const jump = this.spaceKey?.isDown || this.wasd?.W.isDown;
     if (left) {
       this.player.moveLeft();
     } else if (right) {
@@ -438,7 +502,8 @@ export class LevelScene extends Phaser.Scene {
     if (jump) {
       this.player.jump();
     }
-    if (this.player.getIsFiring()) {
+    // Auto-fire only for mobile twin-stick
+    if (this.isMobile && this.player.getIsFiring()) {
       this.fireBullet();
     }
   }
