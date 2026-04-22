@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 
 function GameOverContent() {
   const router = useRouter();
@@ -11,6 +11,7 @@ function GameOverContent() {
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState(false);
 
   async function handleSave() {
     if (!name.trim()) return;
@@ -30,7 +31,7 @@ function GameOverContent() {
       });
       setSaved(true);
     } catch {
-      setSaved(true);
+      setError(true);
     } finally {
       setSaving(false);
     }
@@ -39,10 +40,12 @@ function GameOverContent() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen gap-6 p-4 text-center">
       <h1 className="text-5xl font-bold text-red-500">GAME OVER</h1>
-      <p className="text-2xl text-gray-400">You didn&apos;t make it to Chicot...</p>
+      <p className="text-2xl text-gray-400">
+        You didn&apos;t make it to Chicot...
+      </p>
       <p className="text-4xl text-yellow-400 font-bold">Score: {finalScore}</p>
 
-      {!saved ? (
+      {!saved && !error ? (
         <div className="flex flex-col items-center gap-4">
           <p className="text-gray-300 text-lg">ENTER YOUR NAME</p>
           <input
@@ -63,6 +66,10 @@ function GameOverContent() {
             {saving ? "SAVING..." : "SAVE SCORE"}
           </button>
         </div>
+      ) : error ? (
+        <p className="text-red-400 text-lg">
+          Failed to save score. Please try again.
+        </p>
       ) : (
         <p className="text-green-400 text-lg">Score saved!</p>
       )}
@@ -87,7 +94,13 @@ function GameOverContent() {
 
 export default function GameOverPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          Loading...
+        </div>
+      }
+    >
       <GameOverContent />
     </Suspense>
   );
