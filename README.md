@@ -53,7 +53,7 @@ Difficulty scales with real-life distance from Chicot. Anton starts from the lit
 | Styling | Tailwind CSS v4 |
 | State | React Context + useReducer |
 | Persistence | localStorage (game progress) |
-| Leaderboard | [Vercel KV](https://vercel.com/storage/kv) (Redis), in-memory fallback for local dev |
+| Leaderboard | [Upstash Redis](https://upstash.com/) via Vercel Marketplace, in-memory fallback for local dev |
 | Hosting | [Vercel](https://vercel.com/) |
 
 ## Getting Started
@@ -77,8 +77,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 The leaderboard works out of the box with an in-memory fallback for local development (resets on server restart). For persistent scores:
 
-1. Create a KV store in your [Vercel dashboard](https://vercel.com/dashboard) → Storage → Create → KV
-2. Pull the environment variables locally:
+1. Go to your [Vercel dashboard](https://vercel.com/dashboard) → Storage → click **Upstash** → create a Redis database
+2. Vercel will add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to your project
+3. Pull the environment variables locally:
 
 ```bash
 npx vercel env pull .env.local
