@@ -1,25 +1,75 @@
 "use client";
 
-import Link from "next/link";
 import { useGame } from "@/context/GameContext";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
 export default function TitleScreen() {
   const { dispatch } = useGame();
   const [confirmReset, setConfirmReset] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageOrientation, setImageOrientation] = useState<
+    "horizontal" | "vertical"
+  >("horizontal");
 
-  function handleReset() {
+  const chicotImages = useMemo(
+    () => [
+      "/backgrounds/main-menu/chicot_1.jpg",
+      "/backgrounds/main-menu/chicot_2.jpg",
+      "/backgrounds/main-menu/chicot_3.jpg",
+      "/backgrounds/main-menu/chicot_4.jpg",
+      "/backgrounds/main-menu/chicot_5.jpg",
+      "/backgrounds/main-menu/chicot_6.jpg",
+      "/backgrounds/main-menu/chicot_7.jpg",
+      "/backgrounds/main-menu/chicot_8.jpg",
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    // image orientation for beautiful panning effect :thumbsup: amaizing
+    const img = new Image();
+    img.src = chicotImages[currentImageIndex];
+    img.onload = () => {
+      setImageOrientation(img.width > img.height ? "horizontal" : "vertical");
+    };
+  }, [currentImageIndex, chicotImages]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % chicotImages.length);
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, [chicotImages.length]);
+
+  const handleReset = () => {
     if (!confirmReset) {
       setConfirmReset(true);
       return;
     }
     dispatch({ type: "GAME_OVER" });
     setConfirmReset(false);
-  }
+  };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen gap-8 p-4">
-      <div className="text-center">
+    <main className="flex flex-col items-center justify-center min-h-screen gap-8 p-4 relative overflow-hidden">
+      <div
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out blur-[5px] scale-125 ${
+          imageOrientation === "horizontal"
+            ? "animate-pan-horizontal"
+            : "animate-pan-vertical"
+        }`}
+        style={{
+          backgroundImage: `url(${chicotImages[currentImageIndex]})`,
+        }}
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/50" />
+
+      {/* Content */}
+      <div className="text-center relative z-10">
         <h1 className="text-6xl font-bold tracking-tight mb-4">
           ZOLOTI HEROES
         </h1>
@@ -28,7 +78,7 @@ export default function TitleScreen() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 w-64">
+      <div className="flex flex-col gap-4 w-64 relative z-10">
         <Link
           href="/select"
           className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xl py-4 px-8 rounded-lg text-center transition-colors"

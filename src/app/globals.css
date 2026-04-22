@@ -24,3 +24,30 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Background pan animations */
+@keyframes panHorizontal {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes panVertical {
+  0% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+.animate-pan-horizontal {
+  animation: panHorizontal 20s linear infinite alternate;
+}
+
+.animate-pan-vertical {
+  animation: panVertical 20s linear infinite alternate;
+}
