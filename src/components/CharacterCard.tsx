@@ -21,11 +21,12 @@ export function CharacterCard({
 
   return (
     <button
-      onClick={onSelect}
-      className={`cursor-pointer relative flex flex-col items-center p-4 rounded-xl border-2 transition-all hover:scale-105 ${
+      onClick={isCompleted ? undefined : onSelect}
+      disabled={isCompleted}
+      className={`relative flex flex-col items-center p-4 rounded-xl border-2 transition-all ${
         isCompleted
-          ? "border-green-500 bg-green-500/10"
-          : "border-gray-700 bg-gray-900 hover:border-yellow-500"
+          ? "border-green-500 bg-green-500/10 cursor-default opacity-75"
+          : "cursor-pointer border-gray-700 bg-gray-900 hover:border-yellow-500 hover:scale-105"
       }`}
     >
       {isCompleted && (
@@ -43,7 +44,6 @@ export function CharacterCard({
             height={80}
             className="w-full h-full object-cover"
             style={{ objectFit: "cover" }}
-            onError={() => {}}
             unoptimized
           />
         ) : (

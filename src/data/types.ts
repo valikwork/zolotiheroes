@@ -23,6 +23,7 @@ export interface Character {
   name: string;
   difficulty: number; // 1-8
   headImage?: string; // path to head photo
+  mapImage: string;   // path to map image shown on /map page
   levels: Level[];
 }
 

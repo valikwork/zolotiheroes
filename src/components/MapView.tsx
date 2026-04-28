@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { Character } from "@/data/types";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 interface MapViewProps {
   character: Character;
@@ -10,9 +11,16 @@ interface MapViewProps {
   animateFromLevel?: number;
 }
 
-export function MapView({ character, currentLevelIndex, onStartLevel, animateFromLevel }: MapViewProps) {
+export function MapView({
+  character,
+  currentLevelIndex,
+  onStartLevel,
+  animateFromLevel,
+}: MapViewProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [animationDone, setAnimationDone] = useState(animateFromLevel === undefined);
+  const [animationDone, setAnimationDone] = useState(
+    animateFromLevel === undefined,
+  );
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -69,7 +77,13 @@ export function MapView({ character, currentLevelIndex, onStartLevel, animateFro
 
         ctx!.beginPath();
         ctx!.arc(pin.x, pin.y, isChicot ? 14 : 10, 0, Math.PI * 2);
-        ctx!.fillStyle = isCompleted ? "#22c55e" : isCurrent ? "#eab308" : isChicot ? "#f59e0b" : "#374151";
+        ctx!.fillStyle = isCompleted
+          ? "#22c55e"
+          : isCurrent
+            ? "#eab308"
+            : isChicot
+              ? "#f59e0b"
+              : "#374151";
         ctx!.fill();
         ctx!.strokeStyle = isChicot ? "#f59e0b" : "#fff";
         ctx!.lineWidth = 2;
@@ -99,7 +113,10 @@ export function MapView({ character, currentLevelIndex, onStartLevel, animateFro
       }
     }
 
-    if (animateFromLevel !== undefined && animateFromLevel < currentLevelIndex) {
+    if (
+      animateFromLevel !== undefined &&
+      animateFromLevel < currentLevelIndex
+    ) {
       const fromPin = pins[animateFromLevel];
       const toPin = pins[currentLevelIndex];
       const duration = 1500;
@@ -148,7 +165,17 @@ export function MapView({ character, currentLevelIndex, onStartLevel, animateFro
   return (
     <div ref={containerRef} className="relative w-full h-full min-h-[500px]">
       <div className="absolute inset-0 rounded-xl overflow-hidden">
-        <img src="/map/kyiv.svg" alt="Kyiv map" className="w-full h-full object-cover opacity-60" />
+        <Image
+          src={character.mapImage}
+          alt={`${character.name} map`}
+          className="w-full h-full object-cover opacity-60"
+          onError={(e) => {
+            e.currentTarget.src = "/map/kyiv.svg";
+          }}
+          unoptimized
+          width={500}
+          height={200}
+        />
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       </div>
 

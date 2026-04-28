@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useGame } from "@/context/GameContext";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function VictoryContent() {
@@ -15,18 +15,26 @@ function VictoryContent() {
       {allCompleted ? (
         <>
           <h1 className="text-5xl font-bold text-yellow-400">YOU DID IT!</h1>
-          <p className="text-2xl text-gray-300">All heroes made it to Chicot!</p>
+          <p className="text-2xl text-gray-300">
+            All heroes made it to Chicot!
+          </p>
           <p className="text-6xl">🎉🍻🎉</p>
-          <p className="text-xl text-gray-400">Everyone&apos;s finally here. Was it really that hard?</p>
-          <p className="text-3xl text-yellow-400 font-bold">Final Score: {state.score}</p>
+          <p className="text-xl text-gray-400">
+            Everyone&apos;s finally here. Was it really that hard?
+          </p>
+          <p className="text-3xl text-yellow-400 font-bold">
+            Final Score: {state.score}
+          </p>
         </>
       ) : (
         <>
           <h1 className="text-5xl font-bold text-green-400">MADE IT!</h1>
           <p className="text-xl text-gray-300">Character reached Chicot! 🎉</p>
-          <p className="text-2xl text-yellow-400">Score: {state.score} | HP: {state.health}</p>
+          <p className="text-2xl text-yellow-400">
+            Score: {state.score} | HP: {state.health}
+          </p>
           <p className="text-gray-400">
-            {state.completedCharacters.length} / 8 heroes at Chicot
+            {state.completedCharacters.length} / 11 heroes at Chicot
           </p>
         </>
       )}
@@ -59,7 +67,13 @@ function VictoryContent() {
 
 export default function VictoryPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          Loading...
+        </div>
+      }
+    >
       <VictoryContent />
     </Suspense>
   );

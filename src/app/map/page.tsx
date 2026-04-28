@@ -1,10 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { MapView } from "@/components/MapView";
 import { useGame } from "@/context/GameContext";
 import { characters } from "@/data/characters";
-import { MapView } from "@/components/MapView";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function MapContent() {
@@ -33,20 +32,26 @@ function MapContent() {
     <main className="flex flex-col items-center min-h-screen p-4">
       <div className="flex items-center gap-4 mb-4">
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/select")}
           className="text-gray-500 hover:text-white transition-colors text-sm"
         >
-          ← MENU
+          ← BACK
         </button>
-        <h1 className="text-2xl font-bold">{character.name}&apos;s Route to Chicot</h1>
-        <span className="text-gray-400">HP: {state.health} | Score: {state.score}</span>
+        <h1 className="text-2xl font-bold">
+          {character.name}&apos;s Route to Chicot
+        </h1>
+        <span className="text-gray-400">
+          HP: {state.health} | Score: {state.score}
+        </span>
       </div>
       <div className="w-full max-w-5xl flex-1">
         <MapView
           character={character}
           currentLevelIndex={state.currentLevelIndex}
           onStartLevel={handleStartLevel}
-          animateFromLevel={animateFrom !== null ? parseInt(animateFrom, 10) : undefined}
+          animateFromLevel={
+            animateFrom !== null ? parseInt(animateFrom, 10) : undefined
+          }
         />
       </div>
     </main>
@@ -55,7 +60,13 @@ function MapContent() {
 
 export default function MapPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading map...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          Loading map...
+        </div>
+      }
+    >
       <MapContent />
     </Suspense>
   );
