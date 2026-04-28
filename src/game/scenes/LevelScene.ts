@@ -16,6 +16,7 @@ export class LevelScene extends Phaser.Scene {
   };
   private spaceKey!: Phaser.Input.Keyboard.Key;
   private levelData!: LevelData;
+  private headImage = "";
   private enemiesRemaining = 0;
   private isMobile = false;
   private leftStick = { active: false, x: 0, y: 0, pointerId: -1 };
@@ -49,6 +50,7 @@ export class LevelScene extends Phaser.Scene {
     levelData: LevelData;
     health: number;
     score: number;
+    headImage?: string;
     onEnemyKilled?: (type: string) => void;
     onPlayerHit?: () => void;
     onLevelComplete?: () => void;
@@ -58,6 +60,7 @@ export class LevelScene extends Phaser.Scene {
     this.levelData = data.levelData;
     this.currentHealth = data.health;
     this.currentScore = data.score;
+    this.headImage = data.headImage ?? "";
     this.onEnemyKilled = data.onEnemyKilled;
     this.onPlayerHit = data.onPlayerHit;
     this.onLevelComplete = data.onLevelComplete;
@@ -65,8 +68,24 @@ export class LevelScene extends Phaser.Scene {
     this.onAbandon = data.onAbandon;
   }
 
+  preload() {
+    if (this.levelData.background) {
+      this.load.image("level-bg", this.levelData.background);
+    }
+    if (this.headImage) {
+      this.load.image("player-head", this.headImage);
+    }
+  }
+
   create() {
     this.isMobile = this.sys.game.device.input.touch;
+
+    // Background image
+    if (this.textures.exists("level-bg")) {
+      const bg = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "level-bg");
+      bg.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+      bg.setDepth(-10);
+    }
 
     // Create ground
     this.platforms = this.physics.add.staticGroup();
@@ -98,7 +117,8 @@ export class LevelScene extends Phaser.Scene {
     }
 
     // Create player
-    this.player = new Player(this, GAME_WIDTH / 2, GROUND_Y - 40);
+    const headKey = this.headImage ? "player-head" : undefined;
+    this.player = new Player(this, GAME_WIDTH / 2, GROUND_Y - 40, headKey);
     this.physics.add.collider(this.player, this.platforms);
 
     // Create projectiles group

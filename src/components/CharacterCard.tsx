@@ -1,6 +1,7 @@
 "use client";
 
 import { Character } from "@/data/types";
+import Image from "next/image";
 
 interface CharacterCardProps {
   character: Character;
@@ -31,9 +32,23 @@ export function CharacterCard({
         <div className="absolute top-2 right-2 text-green-400 text-xl">✓</div>
       )}
 
-      {/* Placeholder head — will be replaced with real photo */}
-      <div className="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center text-3xl mb-3">
-        {character.name[0]}
+      <div
+        className={`${!character.headImage && "bg-gray-700"} w-20 h-20 rounded-full overflow-hidden mb-3 flex items-center justify-center text-3xl`}
+      >
+        {character.headImage ? (
+          <Image
+            src={character.headImage}
+            alt={character.name}
+            width={80}
+            height={80}
+            className="w-full h-full object-cover"
+            style={{ objectFit: "cover" }}
+            onError={() => {}}
+            unoptimized
+          />
+        ) : (
+          <span className="absolute">{character.name[0]}</span>
+        )}
       </div>
 
       <h3 className="text-lg font-bold">{character.name}</h3>
@@ -45,7 +60,10 @@ export function CharacterCard({
         <p className="text-green-400 text-xs mt-1 font-bold">At Chicot!</p>
       ) : currentLevel > 0 ? (
         <p className="text-yellow-400 text-xs mt-1">
-          📍 {character.levels[currentLevel]?.name ?? character.levels[character.levels.length - 1].name} ({currentLevel}/{character.levels.length})
+          📍{" "}
+          {character.levels[currentLevel]?.name ??
+            character.levels[character.levels.length - 1].name}{" "}
+          ({currentLevel}/{character.levels.length})
         </p>
       ) : (
         <p className="text-gray-600 text-xs mt-1">

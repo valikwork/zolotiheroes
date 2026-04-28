@@ -2,7 +2,7 @@
 
 import { useGame } from "@/context/GameContext";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function TitleScreen() {
   const { dispatch } = useGame();
@@ -11,22 +11,19 @@ export default function TitleScreen() {
   const [imageOrientation, setImageOrientation] = useState<
     "horizontal" | "vertical"
   >("horizontal");
-
-  const chicotImages = useMemo(
-    () => [
-      "/backgrounds/main-menu/chicot_1.jpg",
-      "/backgrounds/main-menu/chicot_2.jpg",
-      "/backgrounds/main-menu/chicot_3.jpg",
-      "/backgrounds/main-menu/chicot_4.jpg",
-      "/backgrounds/main-menu/chicot_5.jpg",
-      "/backgrounds/main-menu/chicot_6.jpg",
-      "/backgrounds/main-menu/chicot_7.jpg",
-      "/backgrounds/main-menu/chicot_8.jpg",
-    ],
-    [],
-  );
+  const [chicotImages, setChicotImages] = useState<string[]>([]);
 
   useEffect(() => {
+    fetch("/api/chicot-images")
+      .then((res) => res.json())
+      .then((data) => {
+        setChicotImages(data.images);
+        setCurrentImageIndex(Math.floor(Math.random() * data.images.length));
+      });
+  }, []);
+
+  useEffect(() => {
+    if (chicotImages.length === 0) return;
     // image orientation for beautiful panning effect :thumbsup: amaizing
     const img = new Image();
     img.src = chicotImages[currentImageIndex];
@@ -36,8 +33,9 @@ export default function TitleScreen() {
   }, [currentImageIndex, chicotImages]);
 
   useEffect(() => {
+    if (chicotImages.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % chicotImages.length);
+      setCurrentImageIndex(Math.floor(Math.random() * chicotImages.length));
     }, 7000);
 
     return () => clearInterval(interval);

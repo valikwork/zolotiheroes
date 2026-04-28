@@ -48,7 +48,7 @@ export default function PlayPage() {
             width: GAME_WIDTH,
             height: GAME_HEIGHT,
             parent: containerRef.current,
-            backgroundColor: "#1a1a2e",
+            backgroundColor: "#0a0a0f",
             physics: {
               default: "arcade",
               arcade: { gravity: { x: 0, y: 800 }, debug: false },
@@ -71,6 +71,7 @@ export default function PlayPage() {
             },
             health: initialHealthRef.current,
             score: initialScoreRef.current,
+            headImage: characterRef.current?.headImage,
             onEnemyKilled: (enemyType: string) => {
               const points = ENEMY_POINTS[enemyType] ?? 100;
               dispatchRef.current({ type: "ADD_SCORE", points });

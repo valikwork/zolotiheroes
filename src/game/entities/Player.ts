@@ -11,23 +11,25 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private invincibleTimer = 0;
   private invincibleDuration = 1000;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, "player");
+  constructor(scene: Phaser.Scene, x: number, y: number, headTextureKey?: string) {
+    super(scene, x, y, headTextureKey ?? "player-placeholder");
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
     this.setCollideWorldBounds(true);
     this.setBounce(0);
-    this.setSize(32, 48);
-    this.setDisplaySize(32, 48);
+    this.setSize(48, 48);
+    this.setDisplaySize(48, 48);
 
-    // Placeholder rectangle graphic
-    const graphics = scene.add.graphics();
-    graphics.fillStyle(0x3b82f6, 1);
-    graphics.fillRect(0, 0, 32, 48);
-    graphics.generateTexture("player", 32, 48);
-    graphics.destroy();
-    this.setTexture("player");
+    // If no head texture, generate placeholder rectangle
+    if (!headTextureKey || !scene.textures.exists(headTextureKey)) {
+      const graphics = scene.add.graphics();
+      graphics.fillStyle(0x3b82f6, 1);
+      graphics.fillRect(0, 0, 48, 48);
+      graphics.generateTexture("player-placeholder", 48, 48);
+      graphics.destroy();
+      this.setTexture("player-placeholder");
+    }
   }
 
   setAim(angle: number) {
