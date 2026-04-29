@@ -21,6 +21,7 @@ export function MapView({
   const [animationDone, setAnimationDone] = useState(
     animateFromLevel === undefined,
   );
+  const [mapLoaded, setMapLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -169,14 +170,19 @@ export function MapView({
           src={character.mapImage}
           alt={`${character.name} map`}
           className="w-full h-full object-cover opacity-60"
+          onLoad={() => setMapLoaded(true)}
           onError={(e) => {
             e.currentTarget.src = "/map/kyiv.svg";
+            setMapLoaded(true);
           }}
           unoptimized
           width={500}
           height={200}
         />
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+        <canvas
+          ref={canvasRef}
+          className={`${!mapLoaded ? "hidden" : ""} absolute inset-0 w-full h-full`}
+        />
       </div>
 
       {animationDone && (
