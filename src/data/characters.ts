@@ -234,8 +234,8 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Arsenalna",
-        mapX: 0.72,
-        mapY: 0.75,
+        mapX: 0.87,
+        mapY: 0.52,
         background: "/backgrounds/level/arsenalna.jpg",
         enemies: [
           { type: "alarm-clock", count: 5 },
@@ -244,8 +244,8 @@ export const characters: Character[] = [
       },
       {
         name: "Khreshchatyk",
-        mapX: 0.68,
-        mapY: 0.7,
+        mapX: 0.43,
+        mapY: 0.28,
         background: "/backgrounds/level/khreshchatyk.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -254,8 +254,8 @@ export const characters: Character[] = [
       },
       {
         name: "Teatralna",
-        mapX: 0.63,
-        mapY: 0.65,
+        mapX: 0.29,
+        mapY: 0.45,
         background: "/backgrounds/level/teatralna.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -264,8 +264,8 @@ export const characters: Character[] = [
       },
       {
         name: "Universytet",
-        mapX: 0.55,
-        mapY: 0.55,
+        mapX: 0.1,
+        mapY: 0.52,
         background: "/backgrounds/level/universytet.jpg",
         enemies: [
           { type: "laptop", count: 3 },
@@ -275,8 +275,8 @@ export const characters: Character[] = [
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.17,
+        mapY: 0.37,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 5 },
@@ -295,8 +295,8 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Spaska 13",
-        mapX: 0.72,
-        mapY: 0.75,
+        mapX: 0.59,
+        mapY: 0.05,
         background: "/backgrounds/level/spaska-13.jpg",
         enemies: [
           { type: "alarm-clock", count: 5 },
@@ -305,8 +305,8 @@ export const characters: Character[] = [
       },
       {
         name: "Spaska 12",
-        mapX: 0.68,
-        mapY: 0.7,
+        mapX: 0.62,
+        mapY: 0.12,
         background: "/backgrounds/level/spaska-12.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -314,20 +314,20 @@ export const characters: Character[] = [
         ],
       },
       {
-        name: "Schekavitsa",
-        mapX: 0.63,
-        mapY: 0.65,
-        background: "/backgrounds/level/schekavitsa.jpg",
+        name: "Shchekavytsia",
+        mapX: 0.4,
+        mapY: 0.12,
+        background: "/backgrounds/level/shchekavytsia.jpg",
         enemies: [
           { type: "traffic", count: 4 },
           { type: "rain-cloud", count: 3 },
         ],
       },
       {
-        name: "Kudryavka",
-        mapX: 0.55,
-        mapY: 0.55,
-        background: "/backgrounds/level/kudryavka.jpg",
+        name: "Kudriavka",
+        mapX: 0.38,
+        mapY: 0.4,
+        background: "/backgrounds/level/kudriavka.jpg",
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 3 },
@@ -336,8 +336,8 @@ export const characters: Character[] = [
       },
       {
         name: "Yaroslava",
-        mapX: 0.52,
-        mapY: 0.48,
+        mapX: 0.49,
+        mapY: 0.65,
         background: "/backgrounds/level/yaroslava.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -347,8 +347,8 @@ export const characters: Character[] = [
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.47,
+        mapY: 0.87,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 5 },
@@ -367,8 +367,8 @@ export const characters: Character[] = [
     levels: [
       {
         name: "K41",
-        mapX: 0.72,
-        mapY: 0.75,
+        mapX: 0.36,
+        mapY: 0.04,
         background: "/backgrounds/level/k41.jpg",
         enemies: [
           { type: "alarm-clock", count: 5 },
@@ -377,8 +377,8 @@ export const characters: Character[] = [
       },
       {
         name: "Closer",
-        mapX: 0.68,
-        mapY: 0.7,
+        mapX: 0.4,
+        mapY: 0.2,
         background: "/backgrounds/level/closer.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -387,8 +387,8 @@ export const characters: Character[] = [
       },
       {
         name: "Valy",
-        mapX: 0.63,
-        mapY: 0.65,
+        mapX: 0.52,
+        mapY: 0.25,
         background: "/backgrounds/level/valy.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -396,10 +396,10 @@ export const characters: Character[] = [
         ],
       },
       {
-        name: "Vosnesensyi Descent",
-        mapX: 0.55,
-        mapY: 0.55,
-        background: "/backgrounds/level/vosnesensyi-descent.jpg",
+        name: "Vosnesenskyi Descent",
+        mapX: 0.47,
+        mapY: 0.45,
+        background: "/backgrounds/level/vosnesenskyi-descent.jpg",
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 3 },
@@ -408,8 +408,8 @@ export const characters: Character[] = [
       },
       {
         name: "Lvivska Square",
-        mapX: 0.52,
-        mapY: 0.48,
+        mapX: 0.47,
+        mapY: 0.61,
         background: "/backgrounds/level/lvivska-square.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -420,7 +420,7 @@ export const characters: Character[] = [
       {
         name: "Chicot",
         mapX: 0.5,
-        mapY: 0.45,
+        mapY: 0.92,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 5 },
@@ -439,8 +439,8 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Minska",
-        mapX: 0.08,
-        mapY: 0.42,
+        mapX: 0.444,
+        mapY: 0.03,
         background: "/backgrounds/level/minska.jpg",
         enemies: [
           { type: "alarm-clock", count: 6 },
@@ -449,8 +449,8 @@ export const characters: Character[] = [
       },
       {
         name: "Obolon",
-        mapX: 0.13,
-        mapY: 0.4,
+        mapX: 0.444,
+        mapY: 0.2,
         background: "/backgrounds/level/obolon.jpg",
         enemies: [
           { type: "laptop", count: 5 },
@@ -458,18 +458,8 @@ export const characters: Character[] = [
         ],
       },
       {
-        name: "Beresteiska",
-        mapX: 0.18,
-        mapY: 0.39,
-        background: "/backgrounds/level/beresteiska.jpg",
-        enemies: [
-          { type: "traffic", count: 4 },
-          { type: "cant-make-it", count: 5 },
-        ],
-      },
-      {
         name: "Pochaina",
-        mapX: 0.22,
+        mapX: 0.444,
         mapY: 0.38,
         background: "/backgrounds/level/pochaina.jpg",
         enemies: [
@@ -480,8 +470,8 @@ export const characters: Character[] = [
       },
       {
         name: "Podil",
-        mapX: 0.27,
-        mapY: 0.39,
+        mapX: 0.52,
+        mapY: 0.6,
         background: "/backgrounds/level/podil.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -491,8 +481,8 @@ export const characters: Character[] = [
       },
       {
         name: "Zoloti Vorota",
-        mapX: 0.38,
-        mapY: 0.42,
+        mapX: 0.5,
+        mapY: 0.83,
         background: "/backgrounds/level/zoloti-vorota.jpg",
         enemies: [
           { type: "laptop", count: 3 },
@@ -502,8 +492,8 @@ export const characters: Character[] = [
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.48,
+        mapY: 0.92,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 5 },

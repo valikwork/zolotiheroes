@@ -77,7 +77,7 @@ export function MapView({
         const isChicot = i === pins.length - 1;
 
         ctx!.beginPath();
-        ctx!.arc(pin.x, pin.y, isChicot ? 14 : 10, 0, Math.PI * 2);
+        ctx!.arc(pin.x, pin.y, isChicot ? 10 : 10, 0, Math.PI * 2);
         ctx!.fillStyle = isCompleted
           ? "#22c55e"
           : isCurrent
@@ -178,6 +178,7 @@ export function MapView({
           unoptimized
           width={500}
           height={200}
+          loading="eager"
         />
         <canvas
           ref={canvasRef}

@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
+import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, LevelData } from "../config";
 import { Player } from "../entities/Player";
-import { GAME_WIDTH, GAME_HEIGHT, GROUND_Y, LevelData } from "../config";
 
 export class LevelScene extends Phaser.Scene {
   private player!: Player;
@@ -94,13 +94,13 @@ export class LevelScene extends Phaser.Scene {
       GROUND_Y + 20,
       GAME_WIDTH,
       40,
-      0x374151
+      0x374151,
     );
     this.platforms.add(ground);
     (ground.body as Phaser.Physics.Arcade.StaticBody).setSize(GAME_WIDTH, 40);
     (ground.body as Phaser.Physics.Arcade.StaticBody).setOffset(
       -GAME_WIDTH / 2,
-      -20
+      -20,
     );
 
     // Create floating platforms
@@ -144,14 +144,14 @@ export class LevelScene extends Phaser.Scene {
       this.enemies,
       this.onBulletHitEnemy,
       undefined,
-      this
+      this,
     );
     this.physics.add.overlap(
       this.player,
       this.enemies,
       this.onEnemyTouchPlayer,
       undefined,
-      this
+      this,
     );
 
     // Keyboard input
@@ -164,10 +164,10 @@ export class LevelScene extends Phaser.Scene {
         D: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
       };
       this.spaceKey = this.input.keyboard.addKey(
-        Phaser.Input.Keyboard.KeyCodes.SPACE
+        Phaser.Input.Keyboard.KeyCodes.SPACE,
       );
       this.escKey = this.input.keyboard.addKey(
-        Phaser.Input.Keyboard.KeyCodes.ESC
+        Phaser.Input.Keyboard.KeyCodes.ESC,
       );
       this.escKey.on("down", () => this.togglePause());
     }
@@ -179,7 +179,7 @@ export class LevelScene extends Phaser.Scene {
           this.player.x,
           this.player.y,
           pointer.worldX,
-          pointer.worldY
+          pointer.worldY,
         );
         this.player.setAim(angle);
       }
@@ -208,10 +208,13 @@ export class LevelScene extends Phaser.Scene {
     }
 
     // Pause button (top-right)
-    const pauseBtn = this.add.text(GAME_WIDTH - 16, 40, "⏸", {
-      fontSize: "24px",
-      color: "#aaa",
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    const pauseBtn = this.add
+      .text(GAME_WIDTH - 16, 40, "⏸", {
+        fontSize: "24px",
+        color: "#aaa",
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
     pauseBtn.on("pointerdown", () => this.togglePause());
 
     // Launch HUD
@@ -255,7 +258,7 @@ export class LevelScene extends Phaser.Scene {
           y,
           24,
           24,
-          colors[spawn.type] ?? 0xff0000
+          colors[spawn.type] ?? 0xff0000,
         ) as any;
         this.enemies.add(enemy);
         this.physics.add.existing(enemy);
@@ -266,7 +269,7 @@ export class LevelScene extends Phaser.Scene {
         const speed = this.getEnemySpeed(spawn.type);
         body.setVelocity(
           Phaser.Math.Between(-speed, speed),
-          Phaser.Math.Between(-speed, speed)
+          Phaser.Math.Between(-speed, speed),
         );
         enemy.enemyType = spawn.type;
         enemy.hp = spawn.type === "couch-potato" ? 3 : 1;
@@ -278,19 +281,19 @@ export class LevelScene extends Phaser.Scene {
   private getEnemySpeed(type: string): number {
     switch (type) {
       case "alarm-clock":
-        return 60;
+        return 150;
       case "laptop":
-        return 100;
+        return 150;
       case "traffic":
         return 180;
       case "cant-make-it":
-        return 70;
+        return 180;
       case "rain-cloud":
-        return 50;
+        return 180;
       case "couch-potato":
-        return 40;
+        return 180;
       default:
-        return 80;
+        return 150;
     }
   }
 
@@ -347,7 +350,7 @@ export class LevelScene extends Phaser.Scene {
     const bullet = this.projectiles.get(
       this.player.x,
       this.player.y,
-      "bullet"
+      "bullet",
     ) as Phaser.Physics.Arcade.Sprite;
     if (!bullet) return;
     bullet.setActive(true);
@@ -385,10 +388,7 @@ export class LevelScene extends Phaser.Scene {
   }
 
   private handleTouchMove(pointer: Phaser.Input.Pointer) {
-    if (
-      pointer.id === this.leftStick.pointerId &&
-      this.leftStick.active
-    ) {
+    if (pointer.id === this.leftStick.pointerId && this.leftStick.active) {
       this.leftStick.x =
         pointer.x < GAME_WIDTH * 0.2
           ? -1
@@ -396,10 +396,7 @@ export class LevelScene extends Phaser.Scene {
             ? 1
             : 0;
     }
-    if (
-      pointer.id === this.rightStick.pointerId &&
-      this.rightStick.active
-    ) {
+    if (pointer.id === this.rightStick.pointerId && this.rightStick.active) {
       const dx = pointer.x - this.rightStick.startX;
       const dy = pointer.y - this.rightStick.startY;
       if (Math.sqrt(dx * dx + dy * dy) > 10) {
@@ -468,28 +465,45 @@ export class LevelScene extends Phaser.Scene {
       this.pauseOverlay = this.add.container(0, 0);
 
       const bg = this.add.rectangle(
-        GAME_WIDTH / 2, GAME_HEIGHT / 2,
-        GAME_WIDTH, GAME_HEIGHT,
-        0x000000, 0.7
+        GAME_WIDTH / 2,
+        GAME_HEIGHT / 2,
+        GAME_WIDTH,
+        GAME_HEIGHT,
+        0x000000,
+        0.7,
       );
       this.pauseOverlay.add(bg);
 
-      const title = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 60, "PAUSED", {
-        fontSize: "48px", color: "#fff", fontStyle: "bold",
-      }).setOrigin(0.5);
+      const title = this.add
+        .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 60, "PAUSED", {
+          fontSize: "48px",
+          color: "#fff",
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5);
       this.pauseOverlay.add(title);
 
       // Resume button
-      const resumeBtn = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 10, "RESUME", {
-        fontSize: "24px", color: "#4ade80", fontStyle: "bold",
-      }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      const resumeBtn = this.add
+        .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 10, "RESUME", {
+          fontSize: "24px",
+          color: "#4ade80",
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5)
+        .setInteractive({ useHandCursor: true });
       resumeBtn.on("pointerdown", () => this.togglePause());
       this.pauseOverlay.add(resumeBtn);
 
       // Quit to menu button
-      const quitBtn = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 60, "QUIT TO MENU", {
-        fontSize: "24px", color: "#ef4444", fontStyle: "bold",
-      }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      const quitBtn = this.add
+        .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 60, "QUIT TO MENU", {
+          fontSize: "24px",
+          color: "#ef4444",
+          fontStyle: "bold",
+        })
+        .setOrigin(0.5)
+        .setInteractive({ useHandCursor: true });
       quitBtn.on("pointerdown", () => {
         this.physics.resume();
         this.onAbandon?.();
@@ -504,13 +518,9 @@ export class LevelScene extends Phaser.Scene {
     if (this.isPaused) return;
     this.player.update(time);
     const left =
-      this.cursors?.left.isDown ||
-      this.wasd?.A.isDown ||
-      this.leftStick.x < 0;
+      this.cursors?.left.isDown || this.wasd?.A.isDown || this.leftStick.x < 0;
     const right =
-      this.cursors?.right.isDown ||
-      this.wasd?.D.isDown ||
-      this.leftStick.x > 0;
+      this.cursors?.right.isDown || this.wasd?.D.isDown || this.leftStick.x > 0;
     const jump = this.spaceKey?.isDown || this.wasd?.W.isDown;
     if (left) {
       this.player.moveLeft();
