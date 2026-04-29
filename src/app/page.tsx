@@ -2,7 +2,17 @@
 
 import { useGame } from "@/context/GameContext";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+// Fisher-Yates shuffle (!) to create a random queue of image indices
+function buildShuffledQueue(length: number): number[] {
+  const arr = Array.from({ length }, (_, i) => i);
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 export default function TitleScreen() {
   const { dispatch } = useGame();
@@ -12,20 +22,29 @@ export default function TitleScreen() {
     "horizontal" | "vertical"
   >("horizontal");
   const [chicotImages, setChicotImages] = useState<string[]>([]);
+  const shuffleQueueRef = useRef<number[]>([]);
+  const cursorRef = useRef<number>(0);
 
   useEffect(() => {
     fetch("/api/chicot-images")
       .then((res) => res.json())
       .then((data) => {
+        // Preload all images into browser cache while first one displays
+        (data.images as string[]).forEach((src) => {
+          const img = new window.Image();
+          img.src = src;
+        });
+        shuffleQueueRef.current = buildShuffledQueue(data.images.length);
+        cursorRef.current = 0;
         setChicotImages(data.images);
-        setCurrentImageIndex(Math.floor(Math.random() * data.images.length));
+        setCurrentImageIndex(shuffleQueueRef.current[0]);
       });
   }, []);
 
   useEffect(() => {
     if (chicotImages.length === 0) return;
     // image orientation for beautiful panning effect :thumbsup: amaizing
-    const img = new Image();
+    const img = new window.Image();
     img.src = chicotImages[currentImageIndex];
     img.onload = () => {
       setImageOrientation(img.width > img.height ? "horizontal" : "vertical");
@@ -35,9 +54,10 @@ export default function TitleScreen() {
   useEffect(() => {
     if (chicotImages.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentImageIndex(Math.floor(Math.random() * chicotImages.length));
+      cursorRef.current =
+        (cursorRef.current + 1) % shuffleQueueRef.current.length;
+      setCurrentImageIndex(shuffleQueueRef.current[cursorRef.current]);
     }, 7000);
-
     return () => clearInterval(interval);
   }, [chicotImages.length]);
 
