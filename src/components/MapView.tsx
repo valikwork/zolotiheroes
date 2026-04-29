@@ -182,7 +182,7 @@ export function MapView({
       {animationDone && (
         <button
           onClick={onStartLevel}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-8 rounded-lg transition-colors text-lg"
+          className="absolute -bottom-18 left-1/2 -translate-x-1/2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-8 rounded-lg transition-colors text-lg"
         >
           START LEVEL: {character.levels[currentLevelIndex]?.name ?? "Chicot"}
         </button>

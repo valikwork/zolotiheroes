@@ -102,11 +102,11 @@ export default function PlayPage() {
               const charId = s.currentCharacterId ?? "unknown";
               dispatchRef.current({ type: "GAME_OVER" });
               routerRef.current.push(
-                `/gameover?score=${finalScore}&character=${encodeURIComponent(charId)}`
+                `/gameover?score=${finalScore}&character=${encodeURIComponent(charId)}`,
               );
             },
             onAbandon: () => {
-              routerRef.current.push("/");
+              routerRef.current.push("/select");
             },
           });
         });

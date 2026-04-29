@@ -92,8 +92,8 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Pchilka",
-        mapX: 0.3,
-        mapY: 0.38,
+        mapX: 0.5,
+        mapY: 0.75,
         background: "/backgrounds/level/pchilka.jpg",
         enemies: [
           { type: "alarm-clock", count: 4 },
@@ -102,8 +102,8 @@ export const characters: Character[] = [
       },
       {
         name: "Park Shevchenka",
-        mapX: 0.34,
-        mapY: 0.35,
+        mapX: 0.55,
+        mapY: 0.55,
         background: "/backgrounds/level/park-shevchenka.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -112,8 +112,8 @@ export const characters: Character[] = [
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.48,
+        mapY: 0.22,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -132,8 +132,8 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Vovcha Tropa",
-        mapX: 0.48,
-        mapY: 0.62,
+        mapX: 0.68,
+        mapY: 0.78,
         background: "/backgrounds/level/vovcha-tropa.jpg",
         enemies: [
           { type: "alarm-clock", count: 5 },
@@ -142,8 +142,8 @@ export const characters: Character[] = [
       },
       {
         name: "Parus Business Centre",
-        mapX: 0.47,
-        mapY: 0.55,
+        mapX: 0.56,
+        mapY: 0.8,
         background: "/backgrounds/level/parus-business-centre.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -152,8 +152,8 @@ export const characters: Character[] = [
       },
       {
         name: "TSUM",
-        mapX: 0.5,
-        mapY: 0.52,
+        mapX: 0.47,
+        mapY: 0.46,
         background: "/backgrounds/level/tsum.jpg",
         enemies: [
           { type: "traffic", count: 3 },
@@ -163,8 +163,8 @@ export const characters: Character[] = [
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.29,
+        mapY: 0.41,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 4 },
@@ -179,12 +179,12 @@ export const characters: Character[] = [
     name: "Dima",
     difficulty: 4,
     headImage: "/characters/dima-head.png",
-    mapImage: "/map/dima.png",
+    mapImage: "/map/malesya.png",
     levels: [
       {
         name: "Vovcha Tropa",
-        mapX: 0.48,
-        mapY: 0.62,
+        mapX: 0.68,
+        mapY: 0.78,
         background: "/backgrounds/level/vovcha-tropa.jpg",
         enemies: [
           { type: "alarm-clock", count: 5 },
@@ -193,8 +193,8 @@ export const characters: Character[] = [
       },
       {
         name: "Parus Business Centre",
-        mapX: 0.47,
-        mapY: 0.55,
+        mapX: 0.56,
+        mapY: 0.8,
         background: "/backgrounds/level/parus-business-centre.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -203,8 +203,8 @@ export const characters: Character[] = [
       },
       {
         name: "TSUM",
-        mapX: 0.5,
-        mapY: 0.52,
+        mapX: 0.47,
+        mapY: 0.46,
         background: "/backgrounds/level/tsum.jpg",
         enemies: [
           { type: "traffic", count: 3 },
@@ -214,8 +214,8 @@ export const characters: Character[] = [
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.29,
+        mapY: 0.41,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 4 },
