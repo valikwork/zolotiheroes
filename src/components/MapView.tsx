@@ -183,9 +183,14 @@ export function MapView({
           ref={canvasRef}
           className={`${!mapLoaded ? "hidden" : ""} absolute inset-0 w-full h-full`}
         />
+        {!mapLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-white text-xl font-bold">Loading map...</p>
+          </div>
+        )}
       </div>
 
-      {animationDone && (
+      {animationDone && mapLoaded && (
         <button
           onClick={onStartLevel}
           className="absolute -bottom-18 left-1/2 -translate-x-1/2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-8 rounded-lg transition-colors text-lg"
