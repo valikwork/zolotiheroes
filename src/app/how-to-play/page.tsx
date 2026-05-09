@@ -25,8 +25,9 @@ export default function HowToPlay() {
         {/* Goal */}
         <Section title="GOAL">
           <p className="text-gray-300">
-            Defeat all enemies on each level to reach Chicot. Survive
-            distractions, keep your HP, climb the leaderboard.
+            Defeat all enemies on each level to reach Chicot and meet your
+            friends. Survive distractions, keep your HP, reach Chicot for
+            powerfull tusovka.
           </p>
         </Section>
 
@@ -74,7 +75,7 @@ export default function HowToPlay() {
               Touching an enemy costs HP. Brief invincibility after each hit.
             </li>
             <li>Clear all enemies to advance.</li>
-            <li>Some enemies (e.g. couch-potato) take multiple hits.</li>
+            <li>Some enemies take multiple hits.</li>
             <li>HP at 0 = game over. Score persists to leaderboard.</li>
           </ul>
         </Section>
