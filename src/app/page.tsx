@@ -91,6 +91,9 @@ export default function TitleScreen() {
         <h1 className="text-6xl font-bold tracking-tight mb-4">
           ZOLOTI HEROES
         </h1>
+        <h2 className="text-2xl italic font-bold tracking-tight mb-4">
+          Kyiv Tusovyi edition
+        </h2>
         <p className="text-xl text-gray-400 italic">
           Everyone&apos;s busy. Nobody&apos;s coming. Get to Chicot anyway.
         </p>
@@ -102,6 +105,12 @@ export default function TitleScreen() {
           className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xl py-4 px-8 rounded-lg text-center transition-colors"
         >
           START
+        </Link>
+        <Link
+          href="/how-to-play"
+          className="bg-gray-800 hover:bg-gray-700 text-white font-bold text-lg py-3 px-8 rounded-lg text-center transition-colors"
+        >
+          HOW TO PLAY
         </Link>
         <Link
           href="/leaderboard"
