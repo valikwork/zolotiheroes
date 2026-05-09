@@ -2,7 +2,7 @@ import * as Phaser from "phaser";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private speed = 200;
-  private jumpForce = -400;
+  private jumpForce = -500;
   private aimAngle = 0;
   private isFiring = false;
   private fireRate = 200;
@@ -18,18 +18,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setCollideWorldBounds(true);
     this.setBounce(0);
-    this.setSize(48, 48);
-    this.setDisplaySize(48, 48);
 
     // If no head texture, generate placeholder rectangle
     if (!headTextureKey || !scene.textures.exists(headTextureKey)) {
-      const graphics = scene.add.graphics();
-      graphics.fillStyle(0x3b82f6, 1);
-      graphics.fillRect(0, 0, 48, 48);
-      graphics.generateTexture("player-placeholder", 48, 48);
-      graphics.destroy();
+      if (!scene.textures.exists("player-placeholder")) {
+        const graphics = scene.add.graphics();
+        graphics.fillStyle(0x3b82f6, 1);
+        graphics.fillRect(0, 0, 48, 48);
+        graphics.generateTexture("player-placeholder", 48, 48);
+        graphics.destroy();
+      }
       this.setTexture("player-placeholder");
     }
+
+    this.setDisplaySize(48, 48);
+    this.setSize(this.width, this.height);
   }
 
   setAim(angle: number) {

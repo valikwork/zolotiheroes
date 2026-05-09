@@ -8,6 +8,7 @@ function GameOverContent() {
   const searchParams = useSearchParams();
   const finalScore = parseInt(searchParams.get("score") ?? "0", 10);
   const characterId = searchParams.get("character") ?? "unknown";
+  const completedCount = parseInt(searchParams.get("completed") ?? "0", 10);
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -26,6 +27,7 @@ function GameOverContent() {
           score: finalScore,
           character: characterId,
           completed: false,
+          completedCount,
           timestamp: Date.now(),
         }),
       });

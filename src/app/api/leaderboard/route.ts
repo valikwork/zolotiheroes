@@ -1,6 +1,6 @@
+import { LeaderboardEntry } from "@/data/types";
 import { Redis } from "@upstash/redis";
 import { NextResponse } from "next/server";
-import { LeaderboardEntry } from "@/data/types";
 
 const LEADERBOARD_KEY = "zoloti-heroes:leaderboard";
 const MAX_ENTRIES = 50;
@@ -12,10 +12,15 @@ const redis = new Redis({
 
 export async function GET() {
   try {
-    const raw = await redis.zrange<string[]>(LEADERBOARD_KEY, 0, MAX_ENTRIES - 1, {
-      rev: true,
-      withScores: true,
-    });
+    const raw = await redis.zrange<string[]>(
+      LEADERBOARD_KEY,
+      0,
+      MAX_ENTRIES - 1,
+      {
+        rev: true,
+        withScores: true,
+      },
+    );
 
     const leaderboard: (LeaderboardEntry & { rank: number })[] = [];
     for (let i = 0; i < raw.length; i += 2) {
@@ -42,15 +47,29 @@ export async function POST(request: Request) {
       name: body.name,
       character: body.character,
       completed: body.completed,
+      completedCount: body.completedCount,
       timestamp: body.timestamp,
     });
 
-    const result = await redis.zadd(LEADERBOARD_KEY, { score: body.score, member });
-    console.log("[leaderboard POST] zadd result:", result, "score:", body.score, "member:", member);
+    const result = await redis.zadd(LEADERBOARD_KEY, {
+      score: body.score,
+      member,
+    });
+    console.log(
+      "[leaderboard POST] zadd result:",
+      result,
+      "score:",
+      body.score,
+      "member:",
+      member,
+    );
 
     return NextResponse.json({ ok: true, zadd: result });
   } catch (err) {
     console.error("[leaderboard POST]", err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: String(err) },
+      { status: 500 },
+    );
   }
 }

@@ -100,9 +100,10 @@ export default function PlayPage() {
               const s = stateRef.current;
               const finalScore = s.score;
               const charId = s.currentCharacterId ?? "unknown";
+              const completedCount = s.completedCharacters.length;
               dispatchRef.current({ type: "GAME_OVER" });
               routerRef.current.push(
-                `/gameover?score=${finalScore}&character=${encodeURIComponent(charId)}`,
+                `/gameover?score=${finalScore}&character=${encodeURIComponent(charId)}&completed=${completedCount}`,
               );
             },
             onAbandon: () => {

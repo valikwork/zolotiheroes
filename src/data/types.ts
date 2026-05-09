@@ -41,5 +41,6 @@ export interface LeaderboardEntry {
   score: number;
   character: string;
   completed: boolean;
+  completedCount: number; // how many characters reached Chicot
   timestamp: number;
 }

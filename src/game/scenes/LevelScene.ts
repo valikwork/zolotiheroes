@@ -1,4 +1,5 @@
 import * as Phaser from "phaser";
+import { ENEMY_POINTS } from "../../data/characters";
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, LevelData } from "../config";
 import { Player } from "../entities/Player";
 
@@ -75,6 +76,11 @@ export class LevelScene extends Phaser.Scene {
     if (this.headImage) {
       this.load.image("player-head", this.headImage);
     }
+    // Load sprite for each unique enemy type in this level
+    const types = [...new Set(this.levelData.enemies.map((e) => e.type))];
+    for (const type of types) {
+      this.load.image(type, `/enemies/${type}.png`);
+    }
   }
 
   create() {
@@ -89,32 +95,18 @@ export class LevelScene extends Phaser.Scene {
 
     // Create ground
     this.platforms = this.physics.add.staticGroup();
+
+    const groundTop = GROUND_Y;
+    const groundHeight = GAME_HEIGHT - groundTop;
     const ground = this.add.rectangle(
       GAME_WIDTH / 2,
-      GROUND_Y + 20,
+      groundTop + groundHeight / 2,
       GAME_WIDTH,
-      40,
+      groundHeight,
       0x374151,
     );
+    this.physics.add.existing(ground, true);
     this.platforms.add(ground);
-    (ground.body as Phaser.Physics.Arcade.StaticBody).setSize(GAME_WIDTH, 40);
-    (ground.body as Phaser.Physics.Arcade.StaticBody).setOffset(
-      -GAME_WIDTH / 2,
-      -20,
-    );
-
-    // Create floating platforms
-    const platformDefs =
-      this.levelData.platforms ?? this.generateDefaultPlatforms();
-    for (const p of platformDefs) {
-      const px = p.x * GAME_WIDTH;
-      const py = p.y * GAME_HEIGHT;
-      const pw = p.width * GAME_WIDTH;
-      const plat = this.add.rectangle(px, py, pw, 16, 0x4b5563);
-      this.platforms.add(plat);
-      (plat.body as Phaser.Physics.Arcade.StaticBody).setSize(pw, 16);
-      (plat.body as Phaser.Physics.Arcade.StaticBody).setOffset(-pw / 2, -8);
-    }
 
     // Create player
     const headKey = this.headImage ? "player-head" : undefined;
@@ -139,6 +131,7 @@ export class LevelScene extends Phaser.Scene {
     this.spawnEnemies();
 
     // Collisions
+    this.physics.add.collider(this.enemies, ground);
     this.physics.add.overlap(
       this.projectiles,
       this.enemies,
@@ -225,20 +218,6 @@ export class LevelScene extends Phaser.Scene {
     });
   }
 
-  private generateDefaultPlatforms(): {
-    x: number;
-    y: number;
-    width: number;
-  }[] {
-    return [
-      { x: 0.2, y: 0.55, width: 0.15 },
-      { x: 0.5, y: 0.45, width: 0.2 },
-      { x: 0.8, y: 0.55, width: 0.15 },
-      { x: 0.35, y: 0.7, width: 0.12 },
-      { x: 0.65, y: 0.7, width: 0.12 },
-    ];
-  }
-
   private spawnEnemies() {
     this.enemiesRemaining = 0;
     for (const spawn of this.levelData.enemies) {
@@ -246,22 +225,37 @@ export class LevelScene extends Phaser.Scene {
         const x = Phaser.Math.Between(50, GAME_WIDTH - 50);
         const y = Phaser.Math.Between(50, GROUND_Y - 100);
         const colors: Record<string, number> = {
-          "alarm-clock": 0xef4444,
+          watch: 0xef4444,
           laptop: 0x8b5cf6,
           traffic: 0xf97316,
           "cant-make-it": 0x06b6d4,
           "rain-cloud": 0x6366f1,
-          "couch-potato": 0x84cc16,
+          lazy: 0x84cc16,
+          wallet: 0xfbbf24,
+          "tck-1": 0xf43f5e,
+          "tck-2": 0xa855f7,
+          "tck-3": 0x0ea5e9,
+          "tck-4": 0x10b981,
         };
-        const enemy = this.add.rectangle(
-          x,
-          y,
-          24,
-          24,
-          colors[spawn.type] ?? 0xff0000,
-        ) as any;
-        this.enemies.add(enemy);
-        this.physics.add.existing(enemy);
+        const hasSprite =
+          this.textures.exists(spawn.type) &&
+          this.textures.get(spawn.type).key !== "__MISSING";
+        let enemy: any;
+        if (hasSprite) {
+          enemy = this.physics.add.sprite(x, y, spawn.type);
+          enemy.setDisplaySize(48, 48);
+          this.enemies.add(enemy);
+        } else {
+          enemy = this.add.rectangle(
+            x,
+            y,
+            24,
+            24,
+            colors[spawn.type] ?? 0xff0000,
+          );
+          this.enemies.add(enemy);
+          this.physics.add.existing(enemy);
+        }
         const body = enemy.body as Phaser.Physics.Arcade.Body;
         body.setAllowGravity(false);
         body.setCollideWorldBounds(true);
@@ -272,26 +266,43 @@ export class LevelScene extends Phaser.Scene {
           Phaser.Math.Between(-speed, speed),
         );
         enemy.enemyType = spawn.type;
-        enemy.hp = spawn.type === "couch-potato" ? 3 : 1;
+        enemy.hp = this.getEnemyHp(spawn.type);
         this.enemiesRemaining++;
       }
     }
   }
 
+  private getEnemyHp(type: string): number {
+    const pts = ENEMY_POINTS[type] ?? 100;
+    if (pts >= 200) return 3;
+    if (pts >= 125) return 2;
+    return 1;
+  }
+
   private getEnemySpeed(type: string): number {
     switch (type) {
-      case "alarm-clock":
+      case "watch":
         return 150;
       case "laptop":
         return 150;
       case "traffic":
-        return 180;
+        return 220;
       case "cant-make-it":
-        return 180;
+        return 150;
       case "rain-cloud":
-        return 180;
-      case "couch-potato":
-        return 180;
+        return 130;
+      case "lazy":
+        return 150;
+      case "wallet":
+        return 160;
+      case "tck-1":
+        return 150;
+      case "tck-2":
+        return 160;
+      case "tck-3":
+        return 190;
+      case "tck-4":
+        return 220;
       default:
         return 150;
     }
@@ -307,12 +318,17 @@ export class LevelScene extends Phaser.Scene {
       this.onEnemyKilled?.(type);
 
       const points: Record<string, number> = {
-        "alarm-clock": 100,
+        watch: 100,
         laptop: 150,
         traffic: 200,
         "cant-make-it": 75,
         "rain-cloud": 175,
-        "couch-potato": 250,
+        lazy: 250,
+        wallet: 125,
+        "tck-1": 125,
+        "tck-2": 175,
+        "tck-3": 200,
+        "tck-4": 250,
       };
       this.currentScore += points[type] ?? 100;
       this.events.emit("enemyKilled", this.enemiesRemaining);

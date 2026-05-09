@@ -30,16 +30,17 @@ export default function LeaderboardPage() {
         <p className="text-gray-400">No scores yet. Be the first!</p>
       ) : (
         <div className="w-full max-w-lg">
-          <div className="grid grid-cols-[3rem_1fr_5rem_5rem] gap-2 text-gray-500 text-sm mb-2 px-2">
+          <div className="grid grid-cols-[3rem_1fr_5rem_4rem_5rem] gap-2 text-gray-500 text-sm mb-2 px-2">
             <span>#</span>
             <span>NAME</span>
             <span className="text-right">SCORE</span>
+            <span className="text-right">🏁</span>
             <span className="text-right">HERO</span>
           </div>
           {entries.map((entry) => (
             <div
               key={`${entry.name}-${entry.timestamp}`}
-              className={`grid grid-cols-[3rem_1fr_5rem_5rem] gap-2 py-3 px-2 rounded-lg mb-1 ${
+              className={`grid grid-cols-[3rem_1fr_5rem_4rem_5rem] gap-2 py-3 px-2 rounded-lg mb-1 ${
                 entry.rank <= 3 ? "bg-yellow-500/10" : "bg-gray-900"
               }`}
             >
@@ -48,9 +49,10 @@ export default function LeaderboardPage() {
               </span>
               <span className="font-bold flex items-center gap-2">
                 {entry.name}
-                {entry.completed && <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded">COMPLETED</span>}
+                {entry.completed && <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded">WIN</span>}
               </span>
               <span className="text-right text-yellow-400 font-mono">{entry.score.toLocaleString()}</span>
+              <span className="text-right text-gray-400 text-sm">{entry.completedCount ?? 0}/11</span>
               <span className="text-right text-gray-400 text-sm capitalize">{entry.character}</span>
             </div>
           ))}

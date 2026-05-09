@@ -3,12 +3,17 @@ import { Character } from "./types";
 export const MAX_HEALTH = 100;
 
 export const ENEMY_POINTS: Record<string, number> = {
-  "alarm-clock": 100,
+  watch: 100,
   laptop: 150,
-  traffic: 200,
+  traffic: 175,
   "cant-make-it": 75,
   "rain-cloud": 175,
-  "couch-potato": 250,
+  lazy: 250,
+  wallet: 125,
+  "tck-1": 125,
+  "tck-2": 175,
+  "tck-3": 200,
+  "tck-4": 250,
 };
 
 export const characters: Character[] = [
@@ -25,8 +30,9 @@ export const characters: Character[] = [
         mapY: 0.4,
         background: "/backgrounds/level/opera-hotel-kyiv.jpg",
         enemies: [
-          { type: "alarm-clock", count: 4 },
+          { type: "watch", count: 4 },
           { type: "cant-make-it", count: 3 },
+          { type: "wallet", count: 3 },
         ],
       },
       {
@@ -36,7 +42,7 @@ export const characters: Character[] = [
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "laptop", count: 4 },
-          { type: "traffic", count: 2 },
+          { type: "wallet", count: 2 },
           { type: "cant-make-it", count: 3 },
         ],
       },
@@ -55,7 +61,7 @@ export const characters: Character[] = [
         mapY: 0.05,
         background: "/backgrounds/level/balerina-monument.jpg",
         enemies: [
-          { type: "alarm-clock", count: 5 },
+          { type: "watch", count: 5 },
           { type: "cant-make-it", count: 3 },
         ],
       },
@@ -65,9 +71,10 @@ export const characters: Character[] = [
         mapY: 0.4,
         background: "/backgrounds/level/ivana-franka-descent.jpg",
         enemies: [
-          { type: "alarm-clock", count: 3 },
+          { type: "watch", count: 3 },
           { type: "laptop", count: 3 },
           { type: "traffic", count: 2 },
+          { type: "tck-2", count: 1 },
         ],
       },
       {
@@ -79,6 +86,7 @@ export const characters: Character[] = [
           { type: "laptop", count: 4 },
           { type: "traffic", count: 3 },
           { type: "rain-cloud", count: 2 },
+          { type: "wallet", count: 2 },
         ],
       },
     ],
@@ -96,8 +104,9 @@ export const characters: Character[] = [
         mapY: 0.75,
         background: "/backgrounds/level/pchilka.jpg",
         enemies: [
-          { type: "alarm-clock", count: 4 },
+          { type: "watch", count: 4 },
           { type: "laptop", count: 3 },
+          { type: "tck-2", count: 1 },
         ],
       },
       {
@@ -108,6 +117,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 4 },
           { type: "cant-make-it", count: 4 },
+          { type: "tck-3", count: 2 },
         ],
       },
       {
@@ -116,9 +126,9 @@ export const characters: Character[] = [
         mapY: 0.22,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
-          { type: "traffic", count: 4 },
+          { type: "wallet", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 2 },
+          { type: "lazy", count: 2 },
         ],
       },
     ],
@@ -136,7 +146,7 @@ export const characters: Character[] = [
         mapY: 0.78,
         background: "/backgrounds/level/vovcha-tropa.jpg",
         enemies: [
-          { type: "alarm-clock", count: 5 },
+          { type: "watch", count: 5 },
           { type: "laptop", count: 3 },
         ],
       },
@@ -168,8 +178,9 @@ export const characters: Character[] = [
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 4 },
+          { type: "wallet", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
     ],
@@ -187,8 +198,10 @@ export const characters: Character[] = [
         mapY: 0.78,
         background: "/backgrounds/level/vovcha-tropa.jpg",
         enemies: [
-          { type: "alarm-clock", count: 5 },
+          { type: "watch", count: 5 },
           { type: "laptop", count: 3 },
+          { type: "tck-1", count: 1 },
+          { type: "tck-4", count: 1 },
         ],
       },
       {
@@ -199,6 +212,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 4 },
           { type: "traffic", count: 3 },
+          { type: "tck-3", count: 2 },
         ],
       },
       {
@@ -210,6 +224,9 @@ export const characters: Character[] = [
           { type: "traffic", count: 3 },
           { type: "cant-make-it", count: 5 },
           { type: "rain-cloud", count: 2 },
+          { type: "tck-1", count: 1 },
+          { type: "tck-2", count: 1 },
+          { type: "tck-4", count: 2 },
         ],
       },
       {
@@ -220,7 +237,8 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "wallet", count: 3 },
         ],
       },
     ],
@@ -238,7 +256,7 @@ export const characters: Character[] = [
         mapY: 0.52,
         background: "/backgrounds/level/arsenalna.jpg",
         enemies: [
-          { type: "alarm-clock", count: 5 },
+          { type: "watch", count: 5 },
           { type: "cant-make-it", count: 5 },
         ],
       },
@@ -270,7 +288,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
@@ -281,7 +299,8 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "wallet", count: 3 },
         ],
       },
     ],
@@ -299,7 +318,7 @@ export const characters: Character[] = [
         mapY: 0.05,
         background: "/backgrounds/level/spaska-13.jpg",
         enemies: [
-          { type: "alarm-clock", count: 5 },
+          { type: "watch", count: 5 },
           { type: "cant-make-it", count: 5 },
         ],
       },
@@ -331,7 +350,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
@@ -342,7 +361,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 2 },
+          { type: "lazy", count: 2 },
         ],
       },
       {
@@ -353,7 +372,8 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "wallet", count: 3 },
         ],
       },
     ],
@@ -371,7 +391,7 @@ export const characters: Character[] = [
         mapY: 0.04,
         background: "/backgrounds/level/k41.jpg",
         enemies: [
-          { type: "alarm-clock", count: 5 },
+          { type: "watch", count: 5 },
           { type: "cant-make-it", count: 5 },
         ],
       },
@@ -403,7 +423,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
@@ -414,7 +434,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 2 },
+          { type: "lazy", count: 2 },
         ],
       },
       {
@@ -425,7 +445,8 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "wallet", count: 3 },
         ],
       },
     ],
@@ -443,7 +464,7 @@ export const characters: Character[] = [
         mapY: 0.03,
         background: "/backgrounds/level/minska.jpg",
         enemies: [
-          { type: "alarm-clock", count: 6 },
+          { type: "watch", count: 6 },
           { type: "cant-make-it", count: 4 },
         ],
       },
@@ -465,7 +486,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 2 },
+          { type: "lazy", count: 2 },
         ],
       },
       {
@@ -476,7 +497,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 4 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
@@ -487,7 +508,7 @@ export const characters: Character[] = [
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 4 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
@@ -498,7 +519,8 @@ export const characters: Character[] = [
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "wallet", count: 3 },
         ],
       },
     ],
@@ -512,19 +534,21 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Holosiivskyi Park",
-        mapX: 0.92,
-        mapY: 0.72,
+        mapX: 0.46,
+        mapY: 0.93,
         background: "/backgrounds/level/holosiivskyi-park.jpg",
         enemies: [
-          { type: "alarm-clock", count: 6 },
+          { type: "watch", count: 6 },
           { type: "cant-make-it", count: 6 },
+          { type: "tck-1", count: 1 },
+          { type: "tck-2", count: 1 },
         ],
       },
       {
-        name: "Demiyivska",
-        mapX: 0.82,
-        mapY: 0.68,
-        background: "/backgrounds/level/demiyivska.jpg",
+        name: "Demiyivka",
+        mapX: 0.52,
+        mapY: 0.74,
+        background: "/backgrounds/level/demiyivka.jpg",
         enemies: [
           { type: "laptop", count: 5 },
           { type: "traffic", count: 4 },
@@ -532,56 +556,66 @@ export const characters: Character[] = [
       },
       {
         name: "Lybidska",
-        mapX: 0.72,
-        mapY: 0.63,
+        mapX: 0.55,
+        mapY: 0.58,
         background: "/backgrounds/level/lybidska.jpg",
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 3 },
+          { type: "tck-2", count: 2 },
+          { type: "tck-3", count: 1 },
         ],
       },
       {
         name: "Palats Ukraina",
-        mapX: 0.6,
-        mapY: 0.55,
+        mapX: 0.53,
+        mapY: 0.4,
         background: "/backgrounds/level/palats-ukraina.jpg",
         enemies: [
           { type: "laptop", count: 4 },
           { type: "traffic", count: 3 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "tck-1", count: 1 },
+          { type: "tck-2", count: 1 },
+          { type: "tck-3", count: 1 },
         ],
       },
       {
         name: "Olimpiiska",
         mapX: 0.53,
-        mapY: 0.5,
-        background: "/backgrounds/level/olimpiiska.jpg",
+        mapY: 0.27,
+        background: "/backgrounds/level/olimpiiska.png",
         enemies: [
           { type: "traffic", count: 4 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "tck-3", count: 3 },
+          { type: "tck-4", count: 3 },
         ],
       },
       {
         name: "Teatralna",
-        mapX: 0.47,
-        mapY: 0.48,
+        mapX: 0.53,
+        mapY: 0.02,
         background: "/backgrounds/level/teatralna.jpg",
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 5 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
+          { type: "tck-1", count: 1 },
+          { type: "tck-2", count: 3 },
         ],
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.48,
+        mapY: 0.02,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 6 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 4 },
+          { type: "lazy", count: 4 },
+          { type: "wallet", count: 4 },
         ],
       },
     ],
@@ -595,18 +629,18 @@ export const characters: Character[] = [
     levels: [
       {
         name: "Hatne",
-        mapX: 0.02,
-        mapY: 0.42,
+        mapX: 0.37,
+        mapY: 0.93,
         background: "/backgrounds/level/hatne.jpg",
         enemies: [
-          { type: "alarm-clock", count: 7 },
+          { type: "watch", count: 7 },
           { type: "cant-make-it", count: 5 },
         ],
       },
       {
         name: "Teremky",
-        mapX: 0.06,
-        mapY: 0.41,
+        mapX: 0.44,
+        mapY: 0.87,
         background: "/backgrounds/level/teremky.jpg",
         enemies: [
           { type: "laptop", count: 5 },
@@ -615,8 +649,8 @@ export const characters: Character[] = [
       },
       {
         name: "Ipodrom",
-        mapX: 0.1,
-        mapY: 0.4,
+        mapX: 0.47,
+        mapY: 0.8,
         background: "/backgrounds/level/ipodrom.jpg",
         enemies: [
           { type: "traffic", count: 5 },
@@ -625,8 +659,8 @@ export const characters: Character[] = [
       },
       {
         name: "VDNG",
-        mapX: 0.15,
-        mapY: 0.39,
+        mapX: 0.5,
+        mapY: 0.75,
         background: "/backgrounds/level/vdng.jpg",
         enemies: [
           { type: "laptop", count: 4 },
@@ -636,93 +670,94 @@ export const characters: Character[] = [
       },
       {
         name: "Vasylkivska",
-        mapX: 0.2,
-        mapY: 0.38,
+        mapX: 0.53,
+        mapY: 0.65,
         background: "/backgrounds/level/vasylkivska.jpg",
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 3 },
-          { type: "couch-potato", count: 2 },
+          { type: "lazy", count: 2 },
         ],
       },
       {
         name: "Holosiivska",
-        mapX: 0.25,
-        mapY: 0.38,
+        mapX: 0.58,
+        mapY: 0.61,
         background: "/backgrounds/level/holosiivska.jpg",
         enemies: [
           { type: "laptop", count: 4 },
           { type: "traffic", count: 4 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
         name: "Lybidska",
-        mapX: 0.3,
-        mapY: 0.39,
+        mapX: 0.63,
+        mapY: 0.47,
         background: "/backgrounds/level/lybidska.jpg",
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 3 },
+          { type: "lazy", count: 3 },
         ],
       },
       {
         name: "Palats Ukraina",
-        mapX: 0.38,
-        mapY: 0.42,
+        mapX: 0.62,
+        mapY: 0.4,
         background: "/backgrounds/level/palats-ukraina.jpg",
         enemies: [
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 4 },
+          { type: "lazy", count: 4 },
         ],
       },
       {
         name: "Olimpiiska",
-        mapX: 0.44,
-        mapY: 0.44,
-        background: "/backgrounds/level/olimpiiska.jpg",
+        mapX: 0.61,
+        mapY: 0.325,
+        background: "/backgrounds/level/olimpiiska.png",
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 4 },
+          { type: "lazy", count: 4 },
         ],
       },
       {
         name: "PLUG",
-        mapX: 0.44,
-        mapY: 0.44,
+        mapX: 0.61,
+        mapY: 0.25,
         background: "/backgrounds/level/plug.jpg",
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 4 },
+          { type: "lazy", count: 4 },
         ],
       },
       {
         name: "Shevchenka University",
-        mapX: 0.44,
-        mapY: 0.44,
+        mapX: 0.6,
+        mapY: 0.2,
         background: "/backgrounds/level/shevchenka-university.jpg",
         enemies: [
           { type: "laptop", count: 3 },
           { type: "traffic", count: 5 },
           { type: "rain-cloud", count: 4 },
-          { type: "couch-potato", count: 4 },
+          { type: "lazy", count: 4 },
         ],
       },
       {
         name: "Chicot",
-        mapX: 0.5,
-        mapY: 0.45,
+        mapX: 0.58,
+        mapY: 0.14,
         background: "/backgrounds/level/chicot.jpg",
         enemies: [
           { type: "traffic", count: 6 },
           { type: "rain-cloud", count: 5 },
-          { type: "couch-potato", count: 5 },
+          { type: "lazy", count: 5 },
+          { type: "wallet", count: 5 },
         ],
       },
     ],
